@@ -33,7 +33,37 @@ playerColumn model player =
                 Player2 ->
                     model.score.player2
     in
-        div [ class "player-column" ] [ playerHeading player playerActive playerScore ]
+        div [ class "player-column" ]
+            [ playerHeading player playerActive playerScore
+            , playerTargetStatus model player
+            ]
+
+
+playerTargetStatus : Model -> PlayerId -> Html Msg
+playerTargetStatus model player =
+    div []
+        [ div [] [ text ("15 " ++ (displayPlayerStatus model.status15 player)) ]
+        , div [] [ text ("16 " ++ (displayPlayerStatus model.status16 player)) ]
+        , div [] [ text ("17 " ++ (displayPlayerStatus model.status17 player)) ]
+        , div [] [ text ("18 " ++ (displayPlayerStatus model.status18 player)) ]
+        , div [] [ text ("19 " ++ (displayPlayerStatus model.status19 player)) ]
+        , div [] [ text ("20 " ++ (displayPlayerStatus model.status20 player)) ]
+        ]
+
+
+displayPlayerStatus : TargetStatus -> PlayerId -> String
+displayPlayerStatus status player =
+    case status of
+        Active player1Status player2Status ->
+            case player of
+                Player1 ->
+                    toString player1Status
+
+                Player2 ->
+                    toString player2Status
+
+        Closed ->
+            toString status
 
 
 playerHeading : PlayerId -> Bool -> Int -> Html Msg
