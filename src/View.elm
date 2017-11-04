@@ -11,65 +11,82 @@ view : Model -> Html Msg
 view model =
     div [ class "container" ]
         [ div [ class "jumbotron" ] [ h1 [ class "text-center" ] [ text "Cricket Scoreboard" ] ]
-        , div [ class "row" ]
-            [ --playerColumn model.player1 (UpdateUtils.getCurrentPlayer model)
-              centerColumn
-              --, playerColumn model.player2 (UpdateUtils.getCurrentPlayer model)
+        , div [ class "main-body" ]
+            [ playerColumn model Player1
+            , centerColumn
+            , playerColumn model Player2
             ]
         ]
 
 
+playerColumn : Model -> PlayerId -> Html Msg
+playerColumn model player =
+    let
+        playerActive =
+            player == model.currentTurn
 
-{-
-   playerStyle : Bool -> List (Html.Attribute Msg)
-   playerStyle active =
-       if active then
-           [ class "alert alert-danger" ]
-       else
-           [ class "alert alert-warning" ]
+        playerScore =
+            case player of
+                Player1 ->
+                    model.score.player1
 
-
-   playerColumn : Player -> Player -> Html Msg
-   playerColumn player currentPlayer =
-       div [ class "col-md-4" ]
-           [ div [ class "row" ]
-               [ div (playerStyle (player == currentPlayer)) [ text player.name ]
-               ]
-           , div [ class "row" ]
-               [ button [ class "btn btninfo" ] [ text ("Score: " ++ toString player.score) ]
-               ]
-           ]
+                Player2 ->
+                    model.score.player2
+    in
+        div [ class "player-column" ] [ playerHeading player playerActive playerScore ]
 
 
--}
+playerHeading : PlayerId -> Bool -> Int -> Html Msg
+playerHeading player active score =
+    let
+        playerName =
+            case player of
+                Player1 ->
+                    "Player 1"
+
+                Player2 ->
+                    "Player 2"
+    in
+        div []
+            [ div (playerHeadingStyle active) [ text playerName ]
+            , div [] [ text ("Score: " ++ toString score) ]
+            ]
 
 
-buttons : Target -> Html Msg
+playerHeadingStyle : Bool -> List (Html.Attribute Msg)
+playerHeadingStyle active =
+    if active then
+        [ class "player-heading alert alert-danger" ]
+    else
+        [ class "player-heading alert alert-warning" ]
+
+
+buttons : Target -> List (Html Msg)
 buttons target =
     let
         value =
             Target.value target
+
+        buttonText =
+            (toString value) ++ " - "
     in
-        div [ class "row center-block" ]
-            [ div [ class "btn-group" ]
-                [ button [ class "btn btn-info", onClick (Hit target Single) ]
-                    [ text (toString value ++ " - single") ]
-                , button [ class "btn btn-info", onClick (Hit target Double) ]
-                    [ text (toString value ++ " - double") ]
-                , button [ class "btn btn-info", onClick (Hit target Triple) ]
-                    [ text (toString value ++ " - triple") ]
-                ]
-            ]
+        [ button [ class "btn btn-info target-button", onClick (Hit target Single) ]
+            [ text (buttonText ++ "Single") ]
+        , button [ class "btn btn-info target-button", onClick (Hit target Double) ]
+            [ text (buttonText ++ "Double") ]
+        , button [ class "btn btn-info target-button", onClick (Hit target Triple) ]
+            [ text (buttonText ++ "Triple") ]
+        ]
 
 
 centerColumn : Html Msg
 centerColumn =
-    div [ class "col-md-4" ]
-        [ buttons Fifteen
-        , buttons Sixteen
-        , buttons Seventeen
-        , buttons Eighteen
-        , buttons Nineteen
-        , buttons Twenty
-        , button [ class "btn btn-info center-block", onClick Miss ] [ text "Miss" ]
-        ]
+    div [ class "button-wrapper" ]
+        (buttons Fifteen
+            ++ buttons Sixteen
+            ++ buttons Seventeen
+            ++ buttons Eighteen
+            ++ buttons Nineteen
+            ++ buttons Twenty
+            ++ [ button [ class "btn btn-info target-button", onClick Miss ] [ text "Miss" ] ]
+        )
