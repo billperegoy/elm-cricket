@@ -57,11 +57,11 @@ updateStatusAndScore target magnitude model =
             model
 
 
-updateActiveTarget : PlayerTargetStatus -> PlayerTargetStatus -> Target -> Magnitude -> Model -> Model
-updateActiveTarget player1Status player2Status target magnitude model =
+playerStatuses : PlayerId -> PlayerTargetStatus -> PlayerTargetStatus -> ( PlayerTargetStatus, PlayerTargetStatus )
+playerStatuses currentTurn player1Status player2Status =
     let
         currentPlayer =
-            case model.currentTurn of
+            case currentTurn of
                 Player1 ->
                     player1Status
 
@@ -69,12 +69,21 @@ updateActiveTarget player1Status player2Status target magnitude model =
                     player2Status
 
         otherPlayer =
-            case model.currentTurn of
+            case currentTurn of
                 Player1 ->
                     player2Status
 
                 Player2 ->
                     player1Status
+    in
+        ( currentPlayer, otherPlayer )
+
+
+updateActiveTarget : PlayerTargetStatus -> PlayerTargetStatus -> Target -> Magnitude -> Model -> Model
+updateActiveTarget player1Status player2Status target magnitude model =
+    let
+        ( currentPlayer, otherPlayer ) =
+            playerStatuses model.currentTurn player1Status player2Status
 
         ( newStatus, newScoreIncrement ) =
             buildNewStatus model.currentTurn currentPlayer magnitude otherPlayer
