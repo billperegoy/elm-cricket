@@ -42,28 +42,50 @@ playerColumn model player =
 playerTargetStatus : Model -> PlayerId -> Html Msg
 playerTargetStatus model player =
     div []
-        [ div [] [ text ("15 " ++ (displayPlayerStatus model.status15 player)) ]
-        , div [] [ text ("16 " ++ (displayPlayerStatus model.status16 player)) ]
-        , div [] [ text ("17 " ++ (displayPlayerStatus model.status17 player)) ]
-        , div [] [ text ("18 " ++ (displayPlayerStatus model.status18 player)) ]
-        , div [] [ text ("19 " ++ (displayPlayerStatus model.status19 player)) ]
-        , div [] [ text ("20 " ++ (displayPlayerStatus model.status20 player)) ]
+        [ div [] [ text "15", (displayPlayerStatus model.status15 player) ]
+        , div [] [ text "16 ", (displayPlayerStatus model.status16 player) ]
+        , div [] [ text "17 ", (displayPlayerStatus model.status17 player) ]
+        , div [] [ text "18 ", (displayPlayerStatus model.status18 player) ]
+        , div [] [ text "19 ", (displayPlayerStatus model.status19 player) ]
+        , div [] [ text "20 ", (displayPlayerStatus model.status20 player) ]
         ]
 
 
-displayPlayerStatus : TargetStatus -> PlayerId -> String
+displayPlayerStatus : TargetStatus -> PlayerId -> Html Msg
 displayPlayerStatus status player =
     case status of
         Active player1Status player2Status ->
             case player of
                 Player1 ->
-                    toString player1Status
+                    case player1Status of
+                        Unopened 0 ->
+                            span [] []
+
+                        Unopened 1 ->
+                            img [ class "hit-icon", src "images/hit-01.svg" ] []
+
+                        Unopened _ ->
+                            img [ class "hit-icon", src "images/hit-02.svg" ] []
+
+                        Opened ->
+                            img [ class "hit-icon", src "images/open.svg" ] []
 
                 Player2 ->
-                    toString player2Status
+                    case player2Status of
+                        Unopened 0 ->
+                            span [] []
+
+                        Unopened 1 ->
+                            img [ class "hit-icon", src "images/hit-01.svg" ] []
+
+                        Unopened _ ->
+                            img [ class "hit-icon", src "images/hit-02.svg" ] []
+
+                        Opened ->
+                            img [ class "hit-icon", src "images/open.svg" ] []
 
         Closed ->
-            toString status
+            img [ class "hit-icon", src "images/open.svg" ] []
 
 
 playerHeading : PlayerId -> Bool -> Int -> Int -> Html Msg

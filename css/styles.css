@@ -1,0 +1,34 @@
+.main-body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.player_column {
+  flex: 0 1 30%;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 300px;
+  flex: 0 1 30%;
+}
+.target-button {
+  flex: 0 1 30%;
+  margin-bottom: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.player-heading {
+  width: 300px;
+}
+
+.hit-icon {
+  width: 20px;
+  height: 20px;
+}
