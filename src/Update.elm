@@ -127,7 +127,12 @@ buildNewStatus player status magnitude otherPlayerStatus =
             Unopened value ->
                 let
                     increment =
-                        value + Magnitude.value magnitude - 3
+                        case otherPlayerStatus of
+                            Opened ->
+                                0
+
+                            Unopened _ ->
+                                value + Magnitude.value magnitude - 3
                 in
                     if increment > 0 then
                         ( getNewStatus player newMagnitude otherPlayerStatus

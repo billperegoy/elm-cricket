@@ -34,7 +34,7 @@ playerColumn model player =
                     model.score.player2
     in
         div [ class "player-column" ]
-            [ playerHeading player playerActive playerScore
+            [ playerHeading player playerActive playerScore model.currentDart
             , playerTargetStatus model player
             ]
 
@@ -66,16 +66,22 @@ displayPlayerStatus status player =
             toString status
 
 
-playerHeading : PlayerId -> Bool -> Int -> Html Msg
-playerHeading player active score =
+playerHeading : PlayerId -> Bool -> Int -> Int -> Html Msg
+playerHeading player active score currentDart =
     let
+        dart =
+            if active then
+                "  (" ++ toString currentDart ++ ")"
+            else
+                ""
+
         playerName =
             case player of
                 Player1 ->
-                    "Player 1"
+                    "Player 1" ++ dart
 
                 Player2 ->
-                    "Player 2"
+                    "Player 2" ++ dart
     in
         div []
             [ div (playerHeadingStyle active) [ text playerName ]

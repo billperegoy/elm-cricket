@@ -328,23 +328,22 @@ all =
                         { player1 = 30
                         , player2 = 0
                         }
-          {-
-               --
-               --
-             , test "hits target do not score if other player has it open" <|
-                 \() ->
-                     let
-                         initModel =
-                             { player1 = initPlayer1
-                             , player2 = initPlayer2
-                             , currentTurn = Player1
-                             , currentDart = 0
-                             }
+          --
+          --
+        , test "hits target do not score if other player has it open" <|
+            \() ->
+                let
+                    stimModel =
+                        { model | status15 = Active (Unopened 2) Opened }
 
-                         newModel =
-                             Update.update (Model.Hit Sixteen Triple) initModel
-                     in
-                         Expect.equal newModel.player1.score 0
+                    newModel =
+                        Update.update (Model.Hit Fifteen Triple) stimModel
+                in
+                    Expect.equal newModel.score
+                        { player1 = 0
+                        , player2 = 0
+                        }
+          {-
                --
                --
              , test "opening a target that was open for the other player closes this\n        target for current player" <|
