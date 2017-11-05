@@ -343,38 +343,4 @@ all =
                         { player1 = 0
                         , player2 = 0
                         }
-          {-
-               --
-               --
-             , test "opening a target that was open for the other player closes this\n        target for current player" <|
-                 \() ->
-                     let
-                         initModel =
-                             { player1 = initPlayer1
-                             , player2 = initPlayer2
-                             , currentTurn = Player1
-                             , currentDart = 0
-                             }
-
-                         newModel =
-                             Update.update (Model.Hit Sixteen Triple) initModel
-                     in
-                         Expect.equal newModel.player1.status16 Closed
-               --
-               --
-             , test "opening a target that was open for the other player closes this\n        target for other player" <|
-                 \() ->
-                     let
-                         initModel =
-                             { player1 = initPlayer1
-                             , player2 = initPlayer2
-                             , currentTurn = Player1
-                             , currentDart = 0
-                             }
-
-                         newModel =
-                             Update.update (Model.Hit Sixteen Triple) initModel
-                     in
-                         Expect.equal newModel.player2.status16 Closed
-          -}
         ]

@@ -141,11 +141,11 @@ buttons target =
         buttonText =
             (toString value) ++ " - "
     in
-        [ button [ class "btn btn-info target-button", onClick (Hit target Single) ]
+        [ button [ class "btn btn-default target-button", onClick (Hit target Single) ]
             [ text (buttonText ++ "Single") ]
-        , button [ class "btn btn-info target-button", onClick (Hit target Double) ]
+        , button [ class "btn btn-default target-button", onClick (Hit target Double) ]
             [ text (buttonText ++ "Double") ]
-        , button [ class "btn btn-info target-button", onClick (Hit target Triple) ]
+        , button [ class "btn btn-default target-button", onClick (Hit target Triple) ]
             [ text (buttonText ++ "Triple") ]
         ]
 
@@ -159,5 +159,5 @@ centerColumn =
             ++ buttons Eighteen
             ++ buttons Nineteen
             ++ buttons Twenty
-            ++ [ button [ class "btn btn-info target-button", onClick Miss ] [ text "Miss" ] ]
+            ++ [ button [ class "btn btn-default target-button", onClick Miss ] [ text "Miss" ] ]
         )
