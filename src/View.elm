@@ -57,34 +57,28 @@ displayPlayerStatus status player =
         Active player1Status player2Status ->
             case player of
                 Player1 ->
-                    case player1Status of
-                        Unopened 0 ->
-                            span [] []
-
-                        Unopened 1 ->
-                            img [ class "hit-icon", src "images/hit-01.svg" ] []
-
-                        Unopened _ ->
-                            img [ class "hit-icon", src "images/hit-02.svg" ] []
-
-                        Opened ->
-                            img [ class "hit-icon", src "images/open.svg" ] []
+                    selectImage player1Status
 
                 Player2 ->
-                    case player2Status of
-                        Unopened 0 ->
-                            span [] []
-
-                        Unopened 1 ->
-                            img [ class "hit-icon", src "images/hit-01.svg" ] []
-
-                        Unopened _ ->
-                            img [ class "hit-icon", src "images/hit-02.svg" ] []
-
-                        Opened ->
-                            img [ class "hit-icon", src "images/open.svg" ] []
+                    selectImage player2Status
 
         Closed ->
+            img [ class "hit-icon", src "images/open.svg" ] []
+
+
+selectImage : PlayerTargetStatus -> Html Msg
+selectImage status =
+    case status of
+        Unopened 0 ->
+            span [] []
+
+        Unopened 1 ->
+            img [ class "hit-icon", src "images/hit-01.svg" ] []
+
+        Unopened _ ->
+            img [ class "hit-icon", src "images/hit-02.svg" ] []
+
+        Opened ->
             img [ class "hit-icon", src "images/open.svg" ] []
 
 
