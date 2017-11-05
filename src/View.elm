@@ -41,13 +41,31 @@ playerColumn model player =
 
 playerTargetStatus : Model -> PlayerId -> Html Msg
 playerTargetStatus model player =
-    div []
-        [ div [] [ text "15", (displayPlayerStatus model.status15 player) ]
-        , div [] [ text "16 ", (displayPlayerStatus model.status16 player) ]
-        , div [] [ text "17 ", (displayPlayerStatus model.status17 player) ]
-        , div [] [ text "18 ", (displayPlayerStatus model.status18 player) ]
-        , div [] [ text "19 ", (displayPlayerStatus model.status19 player) ]
-        , div [] [ text "20 ", (displayPlayerStatus model.status20 player) ]
+    div [ class "target-list" ]
+        [ div [ class "target-status" ]
+            [ div [ class "target-name" ] [ text "15" ]
+            , (displayPlayerStatus model.status15 player)
+            ]
+        , div [ class "target-status" ]
+            [ div [ class "target-name" ] [ text "16" ]
+            , (displayPlayerStatus model.status16 player)
+            ]
+        , div [ class "target-status" ]
+            [ div [ class "target-name" ] [ text "17" ]
+            , (displayPlayerStatus model.status17 player)
+            ]
+        , div [ class "target-status" ]
+            [ div [ class "target-name" ] [ text "18" ]
+            , (displayPlayerStatus model.status18 player)
+            ]
+        , div [ class "target-status" ]
+            [ div [ class "target-name" ] [ text "19" ]
+            , (displayPlayerStatus model.status19 player)
+            ]
+        , div [ class "target-status" ]
+            [ div [ class "target-name" ] [ text "20" ]
+            , (displayPlayerStatus model.status20 player)
+            ]
         ]
 
 
@@ -101,7 +119,8 @@ playerHeading player active score currentDart =
     in
         div []
             [ div (playerHeadingStyle active) [ text playerName ]
-            , div [] [ text ("Score: " ++ toString score) ]
+            , div [ class "score label label-default" ]
+                [ text ("Score: " ++ toString score) ]
             ]
 
 
