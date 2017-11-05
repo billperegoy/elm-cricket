@@ -16,7 +16,7 @@ update msg model =
 
         Hit target magnitude ->
             model
-                |> updateStatus target magnitude
+                |> updateStatusAndScore target magnitude
                 |> updateTurn
                 |> updateDart
 
@@ -47,8 +47,8 @@ changePlayer player =
             Player1
 
 
-updateStatus : Target -> Magnitude -> Model -> Model
-updateStatus target magnitude model =
+updateStatusAndScore : Target -> Magnitude -> Model -> Model
+updateStatusAndScore target magnitude model =
     case StatusUtils.getStatus model target of
         Active player1Status player2Status ->
             updateActiveTarget player1Status player2Status target magnitude model
@@ -59,28 +59,31 @@ updateStatus target magnitude model =
 
 updateActiveTarget : PlayerTargetStatus -> PlayerTargetStatus -> Target -> Magnitude -> Model -> Model
 updateActiveTarget player1Status player2Status target magnitude model =
-    case model.currentTurn of
-        Player1 ->
-            let
-                ( newStatus, newScoreIncrement ) =
-                    buildNewStatus model.currentTurn player1Status magnitude player2Status
+    let
+        currentPlayer =
+            case model.currentTurn of
+                Player1 ->
+                    player1Status
 
-                scoreIncrement =
-                    newScoreIncrement * (Target.value target)
-            in
-                StatusUtils.setStatus target newStatus model
-                    |> incrementPlayerScore model.currentTurn scoreIncrement
+                Player2 ->
+                    player2Status
 
-        Player2 ->
-            let
-                ( newStatus, newScoreIncrement ) =
-                    buildNewStatus model.currentTurn player2Status magnitude player1Status
+        otherPlayer =
+            case model.currentTurn of
+                Player1 ->
+                    player2Status
 
-                scoreIncrement =
-                    newScoreIncrement * (Target.value target)
-            in
-                StatusUtils.setStatus target newStatus model
-                    |> incrementPlayerScore model.currentTurn scoreIncrement
+                Player2 ->
+                    player1Status
+
+        ( newStatus, newScoreIncrement ) =
+            buildNewStatus model.currentTurn currentPlayer magnitude otherPlayer
+
+        scoreIncrement =
+            newScoreIncrement * (Target.value target)
+    in
+        StatusUtils.setStatus target newStatus model
+            |> incrementPlayerScore model.currentTurn scoreIncrement
 
 
 incrementPlayerScore : PlayerId -> Int -> Model -> Model
