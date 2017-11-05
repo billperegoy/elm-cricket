@@ -88,28 +88,22 @@ updateActiveTarget player1Status player2Status target magnitude model =
 
 incrementPlayerScore : PlayerId -> Int -> Model -> Model
 incrementPlayerScore player increment model =
-    let
-        newScore =
-            { player1 = model.score.player1 + increment
-            , player2 = model.score.player2
+    case player of
+        Player1 ->
+            { model
+                | score =
+                    { player1 = model.score.player1 + increment
+                    , player2 = model.score.player2
+                    }
             }
-    in
-        case player of
-            Player1 ->
-                { model
-                    | score =
-                        { player1 = model.score.player1 + increment
-                        , player2 = model.score.player2
-                        }
-                }
 
-            Player2 ->
-                { model
-                    | score =
-                        { player1 = model.score.player1
-                        , player2 = model.score.player2 + increment
-                        }
-                }
+        Player2 ->
+            { model
+                | score =
+                    { player1 = model.score.player1
+                    , player2 = model.score.player2 + increment
+                    }
+            }
 
 
 buildNewStatus : PlayerId -> PlayerTargetStatus -> Magnitude -> PlayerTargetStatus -> ( TargetStatus, Int )
